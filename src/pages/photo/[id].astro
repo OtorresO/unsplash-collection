@@ -25,7 +25,7 @@ try {
         urlDownload: links.download,
     };
 } catch (error) {
-    Astro.redirect("/error");
+    return Astro.redirect("/error");
 }
 ---
 

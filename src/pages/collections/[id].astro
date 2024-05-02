@@ -13,7 +13,7 @@ try {
     );
     data = await res.json();
 } catch (error) {
-    Astro.redirect("/error");
+    return Astro.redirect("/error");
 }
 ---
 
