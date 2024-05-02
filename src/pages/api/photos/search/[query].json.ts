@@ -3,9 +3,10 @@ import type { APIRoute } from "astro"
 export const GET: APIRoute = async ({ params, request }) => {
     try {
         const query = params.query
+        const clientId =import.meta.env.UNSPLASH_CLIENT_ID
         const res = await fetch(`https://api.unsplash.com/search/photos/?query=${query}`, {
             headers: {
-                'Authorization': 'Client-ID EqVKhRxa_VwEpKlsHiLKPCTjrt2EMTrMG_wrQj7Xkjs'
+                'Authorization': `Client-ID ${clientId}`
             },
             
         })
