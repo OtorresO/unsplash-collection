@@ -5,11 +5,12 @@ import ActionsPhoto from "../../components/react/ActionsPhoto";
 import type {Photo} from '../../interfaces/Photo'
 const photoId = Astro.params.id;
 let photo:Photo = {} as Photo;
-
+Astro.clientAddress
 
 try {
     if (!Astro.cookies.has("user_id")) throw new Error("User's id not exist");
-    const res = await fetch(`http://localhost:4321/api/photos/photo/${photoId}.json`);
+    const host = import.meta.env.HOST
+    const res = await fetch(`${host}/api/photos/photo/${photoId}.json`);
     const data = await res.json();
     const { id, urls, links, created_at, user, alt_description } = data;
     photo = {

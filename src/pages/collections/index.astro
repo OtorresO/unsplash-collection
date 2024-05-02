@@ -10,9 +10,9 @@ if (cookieUserId) {
 }
 
 try {
-    const res = await fetch(
-        `http://localhost:4321/api/collections/all.json?user_id=${userId}`,
-    );
+    const host = import.meta.env.HOST
+    const res = await fetch(`${host}/api/collections/all.json?user_id=${userId}`,);
+    console.log(Astro.clientAddress)
     collections = (await res.json()) as Array<any>;
 } catch (error) {
     Astro.redirect("/error");

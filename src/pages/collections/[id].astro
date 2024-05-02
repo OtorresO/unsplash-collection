@@ -7,8 +7,9 @@ let userId = "";
 try {
     if (!cookieUserId) throw new Error("User's id not exist");
     userId = cookieUserId.value;
+    const host = import.meta.env.HOST
     const res = await fetch(
-        `http://localhost:4321/api/collections/collection/${userId}-${collectionId}.json`,
+        `${host}/api/collections/collection/${userId}-${collectionId}.json`,
     );
     data = await res.json();
 } catch (error) {
