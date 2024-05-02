@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Search from "./icons/Search"
-import {Toaster,toast } from 'sonner'
+import { Toaster, toast } from 'sonner'
 export default function App() {
     const [data, setData] = useState<null | any>(null)
     const [filter, setFilter] = useState('')
@@ -16,27 +16,32 @@ export default function App() {
         if (e.target.value == '') return
         setFilter(e.target.value)
     }
-    const getPhotos = () => {
+    const getPhotos = async () => {
         setLoadingData(true)
         setData(null)
         setInitialState(false)
-       
-        fetch(`/api/photos/search/${filter}.json`)
-            .then(res => {
-                if (!res.ok) throw new Error(res.statusText);
-                
-                return res.json()
-            })
-            .then(data => {
-                if (data.results) {
-                    setData(data)
-                    setLoadingData(false)
-                }
-            })
-            .catch(error => {
-                toast.error(error)
+        try {
+            const res = await fetch(`/api/photos/search/${filter}.json`)
+            if (!res.ok) {
+                res.json().then(error => {
+                    toast.error(error.message)
+                });
+                return
+            }
+            const data = await res.json()
+            if (data.results) {
+                console.log('pasa por aqui')
+                setData(data)
                 setLoadingData(false)
-            })
+            }
+
+        } catch (error) {
+            setLoadingData(false)
+
+        }
+
+
+
 
 
     }
@@ -85,7 +90,7 @@ export default function App() {
                         {
                             data.results.map((image: any) => (
 
-                                <a href={`/photo/${image.id}`} className="w-full h-fit hover:scale-105 transform transition duration-300 ease-in-out">
+                                <a key={image.id} href={`/photo/${image.id}`} className="w-full h-fit hover:scale-105 transform transition duration-300 ease-in-out">
 
                                     <img src={image.urls.small} alt={image.alt_description} className="rounded-lg" />
 
@@ -107,7 +112,7 @@ export default function App() {
 
             }
 
-        <Toaster position="bottom-center" richColors/>
+            <Toaster position="bottom-center" richColors />
         </div>
 
 

@@ -19,13 +19,12 @@ export default function AddPhotoToCollectionModal({ userId, photo }: { userId: s
     const getCollection = async () => {
         try {
 
-            const res = await fetch(`http://localhost:4321/api/actions-photos/methods.json?user_id=${userId}&photo_id=${photo.id}`)
+            const res = await fetch(`/api/actions-photos/methods.json?user_id=${userId}&photo_id=${photo.id}`)
             if (!res.ok) {
-                return res.json().then(error => {
+                res.json().then(error => {
                     toast.error(error.message)
-                    throw new Error(error.message)
                 });
-                
+                return
             }
             const data = await res.json()
             setCollectionsNotIncludesPhoto(data.collectionsNotIncludesPhoto)
@@ -39,7 +38,7 @@ export default function AddPhotoToCollectionModal({ userId, photo }: { userId: s
     }, [])
     const handleClickAddToCollection = async (collectionId: string, photoUrl: string, photoId: string, photoAltDescription: string, userId: string) => {
         try {
-            const res = await fetch('http://localhost:4321/api/actions-photos/methods.json', {
+            const res = await fetch('/api/actions-photos/methods.json', {
                 method: 'POST',
                 body: JSON.stringify({ collection_id: collectionId, photo_url: photoUrl, photo_id: photoId, alt_description: photoAltDescription, user_id: userId })
             })
@@ -62,7 +61,7 @@ export default function AddPhotoToCollectionModal({ userId, photo }: { userId: s
 
     const handleClickRemoveToCollection = async (collectionId: string, photoId: string, userId: string) => {
         try {
-            const res = await fetch('http://localhost:4321/api/actions-photos/methods.json', {
+            const res = await fetch('/api/actions-photos/methods.json', {
                 method: 'DELETE',
                 body: JSON.stringify({ collection_id: collectionId, photo_id: photoId, user_id: userId })
             })
