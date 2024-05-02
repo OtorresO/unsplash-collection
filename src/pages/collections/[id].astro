@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const collectionId = Astro.params.id;
+let data = [];
+const cookieUserId = Astro.cookies.get("user_id");
+let userId = "";
+try {
+    if (!cookieUserId) throw new Error("User's id not exist");
+    userId = cookieUserId.value;
+    const res = await fetch(
+        `http://localhost:4321/api/collections/collection/${userId}-${collectionId}.json`,
+    );
+    data = await res.json();
+} catch (error) {
+    Astro.redirect("/error");
+}
+---
+
+<Layout title={`photos of the ${data.collection.name} collection`}>
+    <main class="flex  justify-center flex-col mx-[72px] my-14 gap-2">
+    <section class="flex items-center justify-center flex-col gap-4">
+        <h1 class="text-4xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#F1C291] via-[#B97EB1] to-[#A73E99]">{data.collection.name}</h1>
+        <span class="text-center font-light tracking-tight">{data.collection.count}</span>
+     </section>
+     <section class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {
+            data.photos.map((photo:any)=>{
+                return <a href={`../photo/${photo.photo_id}`} class="hover:scale-105 transform transition duration-300 ease-in-out"><img src={photo.photo_url} class="rounded"/></a>
+            })
+        }
+    </section>   
+    </main>
+</Layout>

@@ -1,0 +1,42 @@
+---
+import App from "../components/react/App";
+import sql from "../db/connection";
+import { getCollection } from "../db/CollectionSeed";
+import { getCollectionPhoto } from "../db/CollectionPhotoSeed";
+import type { ICollection } from "../interfaces/Collection";
+import Layout from "../layouts/Layout.astro";
+
+const userCookieId = Astro.cookies.has("user_id");
+let userId: string | undefined = "";
+if (userCookieId) {
+	userId = Astro.cookies.get("user_id")?.value;
+} else {
+	await sql.begin(async (sql) => {
+			const [user] = await sql`INSERT INTO users (created_at) VALUES (current_timestamp) returning id`;
+			const collectionSeed = getCollection(user.id);
+			const [...collections]= await sql`INSERT INTO collections ${ sql(collectionSeed) } returning name,id`;
+			const collectionImageSeed = getCollectionPhoto(
+				collections as ICollection[],
+			);
+			const [...collectionImage] =
+				await sql`INSERT INTO collection_photo ${sql(collectionImageSeed)} returning *`;
+			return [user,collections,collectionImage] as any
+			})
+		.then((data) => {
+			const [user] = data 
+			
+			Astro.cookies.set("user_id", user.id);
+		})
+		.catch((error) => {
+			Astro.redirect('/error')
+		});
+}
+---
+
+<Layout title="UNSPLASH COLLECTION">
+	<main >
+		<App client:load  />
+	</main>
+
+
+</Layout>

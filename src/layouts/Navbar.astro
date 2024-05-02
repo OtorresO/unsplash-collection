@@ -1,0 +1,15 @@
+---
+import Logo from "../components/react/icons/Logo";
+
+const pathname = new URL(Astro.request.url).pathname;
+const currentPath = pathname.slice(1);
+---
+
+<nav class="flex items-center justify-between bg-[#FFFFFF] px-9 py-5 border-b">
+    <a href="/"><Logo/></a>
+    <ul class="flex gap-3 text-[#6C727F] text-sm font-medium">
+        <li><a href="/" class={`${currentPath === "" ? "bg-[#E5E7EB] text-[#121826]" : ""} px-4 py-2 rounded-md`}>Home</a></li>
+        <li><a href="/collections" class={`${currentPath === "collections" ? "bg-[#E5E7EB] text-[#121826]" : ""} px-4 py-2 rounded-md`}>Collections</a></li>
+    </ul>
+    
+</nav>

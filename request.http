@@ -1,0 +1,20 @@
+//GET http://localhost:4321/api/searchPhotos.json
+
+//GET http://localhost:4321/api/photo/methods?id=89.json
+
+//GET http://localhost:4321/api/collections/methods.json?user_id=102&photo_id=rW-I87aPY5Y
+
+//POST http://localhost:4321/api/collections/methods.json
+//Content-Type: "application/json"
+
+//{
+    //"collection_id":"257",
+    //"user_id":106,
+    //"photo_id":"ZCHj_2lJP00",
+    //"photo_url":"sss"
+//}
+
+
+GET http://localhost:4321/api/collections/collection/105-253.json
+
+//GET http://localhost:4321/api/collections/all.json?user_id=107

@@ -1,0 +1,59 @@
+---
+import Navbar from "./Navbar.astro";
+import "@fontsource/be-vietnam-pro/100.css";
+import "@fontsource/be-vietnam-pro/200.css";
+import "@fontsource/be-vietnam-pro/300.css";
+import "@fontsource/be-vietnam-pro/400.css";
+import "@fontsource/be-vietnam-pro/500.css";
+import "@fontsource/be-vietnam-pro/600.css";
+import "@fontsource/be-vietnam-pro/700.css";
+import "@fontsource/be-vietnam-pro/800.css";
+import "@fontsource/be-vietnam-pro/900.css";
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" href="/LogoDark.svg" id="fav-icon" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<Navbar />
+		<slot />
+	</body>
+</html>
+<style>
+	body {
+		font-family: "Be Vietnam Pro", sans-serif;
+	}
+</style>
+
+<script is:inline>
+	const theme = (() => {
+		
+		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			return "dark";
+		}
+		return "light";
+	})();
+	const icon = document.getElementById("fav-icon");
+	if (icon) {
+		if (theme === "light") {
+			icon.setAttribute('href','/Logo.svg')
+			console.log("ligth")
+		} else {
+			icon.setAttribute('href','/LogoDark.svg')
+			console.log('dark')
+		}
+		
+	}
+</script>

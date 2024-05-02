@@ -1,0 +1,92 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const cookieUserId = Astro.cookies.get("user_id");
+let userId = "";
+let collections = [];
+if (cookieUserId) {
+    userId = cookieUserId.value;
+} else {
+    Astro.redirect("/error");
+}
+
+try {
+    const res = await fetch(
+        `http://localhost:4321/api/collections/all.json?user_id=${userId}`,
+    );
+    collections = (await res.json()) as Array<any>;
+} catch (error) {
+    Astro.redirect("/error");
+}
+---
+
+<Layout title="User's collections">
+    <main class="flex flex-col justify-center sm:mx-[72px]">
+        <section class="flex items-center justify-center flex-col py-14 gap-5">
+            <h1 class="text-4xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#F1C291] via-[#B97EB1] to-[#A73E99]">Collections</h1>
+            <p class="w-full sm:w-96 text-sm sm:text-base text-center font-light tracking-tight">
+                Explore the world through collections of beautiful photos free
+                to use under the <a href="https://unsplash.com" class="font-medium underline leading-tight ">Unsplash License</a>.
+            </p>
+        </section>
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {
+                collections.map((collection: any) => {
+                    return (
+                        <a class="w-full h-64 bg-white hover:scale-105 transform transition duration-300 ease-in-out" href={`/collections/${collection.id}`}>
+                            <div class="w-full h-5/6">
+                                {(collection.count == "0" ||
+                                    collection.count == "1") && (
+                                        <img
+                                            class="object-cover w-full h-full rounded"
+                                            src={collection.thumbs}
+                                        />
+
+                                )}
+                                {collection.count == "2" && (
+                                    <div class="grid grid-cols-2 w-full h-full gap-[2px]">
+                                        <img
+                                            class="w-full h-full rounded-s "
+                                            src={collection.thumbs[0].photo_url}
+                                            alt=""
+                                        />
+                                        <img
+                                            class="w-full h-full rounded-e"
+                                            src={collection.thumbs[1].photo_url}
+                                            alt=""
+                                        />
+                                    </div>
+                                )}
+                                {collection.count >= "3" && (
+                                    <div class="w-full h-full grid grid-cols-3 grid-rows-2 gap-[2px]">
+                                        <img
+                                            src={collection.thumbs[0].photo_url}
+                                            class="w-full h-full col-span-2 rounded-s row-span-2"
+                                        />
+                                        <div class="w-auto h-full row-span-2">
+                                            <img
+                                                src={collection.thumbs[1].photo_url}
+                                                class="w-full h-1/2 rounded-e"
+                                                alt=""
+                                            />
+                                            <img
+                                                src={collection.thumbs[2].photo_url}
+                                                class="w-full h-1/2 rounded-e"
+                                                alt=""
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <div class="w-full h-1/6 flex flex-col">
+                                <span class="w-full font-medium">{collection.name}</span>
+                                <small class="w-full font-medium text-xs text-[#6C727F]">
+                                    {collection.count} photos
+                                </small>
+                            </div>
+                        </a>
+                    );
+                })
+            }
+        </section>
+    </main>
+</Layout>

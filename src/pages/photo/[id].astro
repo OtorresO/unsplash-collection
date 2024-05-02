@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { formatDate } from "../../helpers/helpers";
+import ActionsPhoto from "../../components/react/ActionsPhoto";
+import type {Photo} from '../../interfaces/Photo'
+const photoId = Astro.params.id;
+let photo:Photo = {} as Photo;
+
+
+try {
+    if (!Astro.cookies.has("user_id")) throw new Error("User's id not exist");
+    const res = await fetch(`http://localhost:4321/api/photos/photo/${photoId}.json`);
+    const data = await res.json();
+    const { id, urls, links, created_at, user, alt_description } = data;
+    photo = {
+        id: id,
+        url: urls.regular,
+        altDescription: alt_description,
+        author: {
+            name: user.first_name ?? "" + " " + user.last_name ?? "",
+            profileImage: user.profile_image.small ?? "",
+        },
+        datePublished: formatDate(created_at),
+        urlDownload: links.download,
+    };
+} catch (error) {
+    Astro.redirect("/error");
+}
+---
+
+<Layout title="DETAIL PHOTO ">
+    <main class="grid  mx-10 my-20 lg:grid-cols-1 xl:grid-cols-2   justify-center lg:mx-40 lg:my-20 xl:m-20 gap-5">
+        <section >
+            <img src={photo.url} alt={photo.altDescription} class="rounded-lg"/>
+        </section>
+        <section class="flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+                <img src={photo.author.profileImage} class="rounded-full w-auto h-auto"/>
+                <span class="font-semibold text-sm">{photo.author.name}</span>
+            </div>
+            <div class="text-xs font-light">
+                {photo.datePublished}
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <ActionsPhoto
+                    photo={photo}
+                    userId={Astro.cookies.get("user_id")?.value ?? ""}
+                    client:load
+                >
+                
+            
+                </ActionsPhoto>
+            </div>
+
+           
+        </section>
+    </main>
+</Layout>
