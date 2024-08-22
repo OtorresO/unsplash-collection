@@ -50,7 +50,7 @@ export default function App() {
 
         <div className={`flex ${initialState ? 'py-20 ' : 'flex-col pb-20'} items-center justify-center w-full `}>
             {
-                initialState && <img src="/hero-left.png" alt="3 images shuffle at left for hero" className="w-1/4 h-auto" />
+                initialState && <img src="/hero-left.png" alt="3 images shuffle at left for hero" className="w-0 sm:w-1/4 h-auto" />
 
             }
             {
@@ -59,7 +59,7 @@ export default function App() {
                 </div>
             }
 
-            <div className={`${initialState ? 'w-2/4 -mt-52 ' : 'w-full'} flex flex-col items-center gap-6`}>
+            <div className={`${initialState ? 'w-full sm:w-2/4 sm:-mt-52 ' : 'w-full '}  flex flex-col items-center gap-6`}>
                 {
                     initialState && <header className="text-[#121826] flex flex-col items-center gap-3" >
                         <h1 className="text-4xl font-semibold text-center ">Search</h1>
@@ -67,7 +67,7 @@ export default function App() {
                     </header>
                 }
                 <form onSubmit={handleSubmit} className="w-full flex justify-center items-center" >
-                    <div className={`bg-[#ffffff] text-sm font-normal ${initialState ? 'w-11/12' : ' w-5/12 -mt-7'}  h-14 border rounded-lg px-5 flex justify-between items-center`}>
+                    <div className={`bg-[#ffffff] text-sm font-normal ${initialState ? 'w-11/12' : 'w-full sm:w-5/12 -mt-7'}  h-14 border rounded-lg px-5 flex justify-between items-center`}>
                         <input type="text" onChange={handleChangeInput} className="w-full h-full outline-none" placeholder="Enter your keywords..." />
                         <button><Search /></button>
                     </div>
@@ -86,7 +86,7 @@ export default function App() {
 
 
 
-                    (displayData) && <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mx-20 gap-3 grid-flow-row-dense">
+                    (displayData) && <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5  sm:mx-20 gap-3 grid-flow-row-dense">
                         {
                             data.results.map((image: any) => (
 
@@ -108,7 +108,7 @@ export default function App() {
 
             </div >
             {
-                initialState && <img src="/hero-right.png" alt="3 images shuffle at right for hero" className="w-1/4 h-auto" />
+                initialState && <img src="/hero-right.png" alt="3 images shuffle at right for hero" className=" sm:w-1/4 w-0 h-auto" />
 
             }
 
