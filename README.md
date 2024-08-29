@@ -1,4 +1,7 @@
 # UNSPLASH COLLECTION
+  - This app allows you to search for images using the UNSPLASH API
+  - You can see the details of the image and add/remove it from the default collections (for now you cannot create collections)
+  - The default collections are: CATS, DOGS AND HOUSES
 
 ![image](https://github.com/OtorresO/unsplash-collection/assets/161916689/13813bbf-0068-431f-867f-e8b0ecede272)
 
