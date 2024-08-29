@@ -1,4 +1,4 @@
-# MY TASK BOARD
+# UNSPLASH COLLECTION
 
 ![image](https://github.com/OtorresO/unsplash-collection/assets/161916689/13813bbf-0068-431f-867f-e8b0ecede272)
 
