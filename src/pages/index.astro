@@ -28,6 +28,7 @@ if (userCookieId) {
 			Astro.cookies.set("user_id", user.id);
 		})
 		.catch((error) => {
+			console.log(error)	
 			return Astro.redirect('/error')
 		});
 }
